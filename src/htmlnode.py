@@ -12,7 +12,9 @@ class HTMLNode:
     def props_to_html(self):
         final_html = ""
         for attribute in self.props:
-            final_html += " " + attribute + "=" + self.props[attribute]
+            final_html += (
+                    " " + attribute + "=" + '"' + self.props[attribute] + '"'
+                )
         return final_html
 
     def __repr__(self):
