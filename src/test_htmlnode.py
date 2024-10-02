@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode
+from htmlnode import HTMLNode, LeafNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -38,6 +38,22 @@ class TestHTMLNode(unittest.TestCase):
         print(node)
         node.props_to_html()
         print(node.props_to_html())
+
+    def test_eq_leaf(self):
+        node = LeafNode(
+                "p",
+                "Welcome to the backend, where the fun happens!",
+                None
+            )
+        print(node.to_html())
+
+    def test_eq_leaf2(self):
+        node = LeafNode(
+                "a",
+                "Join us",
+                {"href": "https://www.boot.dev"}
+            )
+        print(node.to_html())
 
 
 if __name__ == "__main__":
