@@ -1,5 +1,5 @@
 import unittest
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -56,6 +56,71 @@ class TestHTMLNode(unittest.TestCase):
     def test_to_html_no_tag(self):
         node = LeafNode(None, "Hello, world!")
         self.assertEqual(node.to_html(), "Hello, world!")
+
+    def test_to_html_parent(self):
+        node = ParentNode(
+            "p",
+            [
+                LeafNode(None, "Normal text"),
+            ],
+        )
+
+    def test_to_html_multi_parents(self):
+        node = ParentNode(
+            "p",
+            [
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("i", "italic text"),
+                LeafNode(None, "Normal text"),
+            ],
+        )
+        self.assertEqual(node.to_html(), "<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>")
+
+    def test_nested_parents(self):
+        node = ParentNode(
+            "p",
+            [
+                ParentNode(
+                    "p",
+                    [
+                        LeafNode("b", "Bold text"),
+                        LeafNode(None, "Normal text"),
+                        LeafNode("i", "italic text"),
+                        LeafNode(None, "Normal text"),
+                    ],
+                ),
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("i", "italic text"),
+                LeafNode(None, "Normal text"),
+            ],
+        )
+        self.assertEqual(node.to_html(), "<p><p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>")
+
+    def test_parents_no_children(self):
+        node = ParentNode(
+            "p",
+            None
+        )
+        try:
+            self.assertEqual(node.to_html(), "Invalid HTML: no children")
+        except ValueError:
+            print(ValueError)
+            print("ValueError successfully caught!")
+
+    def test_parent_no_tag(self):
+        node = ParentNode(
+            None,
+            [
+                LeafNode(None, "Normal text"),
+            ],
+        )
+        try:
+            self.assertEqual(node.to_html(), "Invalid HTML: no value")
+        except ValueError:
+            print(ValueError)
+            print("ValueError successfully caught!")
 
 
 if __name__ == "__main__":
