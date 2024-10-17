@@ -1,5 +1,6 @@
 import unittest
-from htmlnode import HTMLNode, LeafNode, ParentNode
+from htmlnode import HTMLNode, LeafNode, ParentNode, text_node_to_html_node
+from textnode import TextNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -121,6 +122,11 @@ class TestHTMLNode(unittest.TestCase):
         except ValueError:
             print(ValueError)
             print("ValueError successfully caught!")
+
+    def test_text_to_html(self):
+        textnode = TextNode("All your base are belong to us!", "text")
+        node = text_node_to_html_node(textnode) 
+        self.assertEqual(node.props_to_html(), None)
 
 
 if __name__ == "__main__":
